@@ -1,0 +1,25 @@
+name: pocketbase
+services:
+  db:
+    image: ghcr.io/muchobien/pocketbase:latest
+    container_name: pocketbasedb
+    hostname: pocketbasedb
+    restart: always
+    command: --encryptionEnv ENCRYPTION
+    environment:
+      - ENCRYPTION=${ENCRYPTION_KEY:-d5bc30cb72341de8a9745c4062489630}
+    ports:
+      - '8090:8090'
+    volumes:
+      - /var/lib/srv/$USER/docker/muchobien/pocketbase/latest/rootfs/data/db/pocketbase:/pb_data
+      - /var/lib/srv/$USER/docker/muchobien/pocketbase/latest/rootfs/data/pocketbase/hooks:pb_hooks
+      - /var/lib/srv/$USER/docker/muchobien/pocketbase/latest/rootfs/data/pocketbase/public:/pb_public
+      - /var/lib/srv/$USER/docker/muchobien/pocketbase/latest/rootfs/config/pocketbase/initdb:/pb_migrations
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:8090/api/health || exit 1
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    extra_hosts:
+      - 'localhost:172.17.0.1'
+      - 'host.docker.internal:host-gateway'
