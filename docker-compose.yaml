@@ -24,7 +24,7 @@ services:
     ports:
       - '8090:8090'
     volumes:
-      - './rootfs/db/pocketbase:/pb_data'
+      - './rootfs/data/db/pocketbase:/pb_data'
       - './rootfs/data/pocketbase/hooks:/pb_hooks'
       - './rootfs/data/pocketbase/public:/pb_public'
       - './rootfs/config/pocketbase/initdb:/pb_migrations'
